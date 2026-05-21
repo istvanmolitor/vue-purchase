@@ -15,6 +15,7 @@ import Select from '@admin/components/ui/Select.vue'
 import Textarea from '@admin/components/ui/Textarea.vue'
 import { toastService } from '@admin/lib/toastService'
 import { CustomerSelect } from '@customer'
+import { ProductSelect } from '@product'
 import { purchaseService, type PurchaseFormData, type PurchaseFormOptions } from '../services/purchaseService'
 import { customerApi } from '@customer/services/customerApi'
 
@@ -211,12 +212,14 @@ onMounted(() => {
               >
                 <div class="space-y-2 md:col-span-2">
                   <Label :for="`item_product_${index}`">Termek *</Label>
-                  <Select :id="`item_product_${index}`" v-model.number="item.product_id" required>
-                    <option :value="0">Valassz termeket</option>
-                    <option v-for="product in options.products" :key="product.id" :value="product.id">
-                      {{ product.name }}
-                    </option>
-                  </Select>
+                  <ProductSelect
+                    :id="`item_product_${index}`"
+                    v-model="item.product_id"
+                    :options="options.products"
+                    :empty-value="0"
+                    placeholder="Valassz termeket"
+                    required
+                  />
                 </div>
 
                 <div class="space-y-2">
@@ -253,4 +256,3 @@ onMounted(() => {
     </div>
   </AdminLayout>
 </template>
-
