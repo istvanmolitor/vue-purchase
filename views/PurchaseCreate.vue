@@ -15,6 +15,7 @@ import Select from '@admin/components/ui/Select.vue'
 import Textarea from '@admin/components/ui/Textarea.vue'
 import { toastService } from '@admin/lib/toastService'
 import { CustomerSelect } from '@customer'
+import { CurrencySelect } from '@currency'
 import { ProductSelect } from '@product'
 import { purchaseService, type PurchaseFormData, type PurchaseFormOptions } from '../services/purchaseService'
 import { customerApi } from '@customer/services/customerApi'
@@ -158,12 +159,14 @@ onMounted(() => {
 
               <div class="space-y-2">
                 <Label for="currency_id">Penznem *</Label>
-                <Select id="currency_id" v-model.number="formData.currency_id" required>
-                  <option :value="0">Valassz penznemet</option>
-                  <option v-for="currency in options.currencies" :key="currency.id" :value="currency.id">
-                    {{ currency.name }} ({{ currency.code }})
-                  </option>
-                </Select>
+                <CurrencySelect
+                  id="currency_id"
+                  v-model="formData.currency_id"
+                  :options="options.currencies"
+                  :empty-value="0"
+                  placeholder="Valassz penznemet"
+                  required
+                />
                 <FieldError v-if="errors.currency_id" :message="errors.currency_id" />
               </div>
 
