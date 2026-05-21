@@ -14,7 +14,9 @@ import Label from '@admin/components/ui/Label.vue'
 import Select from '@admin/components/ui/Select.vue'
 import Textarea from '@admin/components/ui/Textarea.vue'
 import { toastService } from '@admin/lib/toastService'
+import { CustomerSelect } from '@customer'
 import { purchaseService, type PurchaseFormData, type PurchaseFormOptions } from '../services/purchaseService'
+import { customerApi } from '@customer/services/customerApi'
 
 const router = useRouter()
 const route = useRoute()
@@ -110,11 +112,18 @@ const submit = async () => {
   }
 }
 
-watch(() => formData.value.customer_id, (customerId) => {
-  const customer = options.value.customers.find((item) => item.id === customerId)
+watch(() => formData.value.customer_id, async (customerId) => {
+  if (!customerId || customerId === 0) {
+    return
+  }
 
-  if (customer?.currency_id) {
-    formData.value.currency_id = customer.currency_id
+  try {
+    const response = await customerApi.show(customerId)
+    if (response.data.currency_id) {
+      formData.value.currency_id = response.data.currency_id
+    }
+  } catch (err) {
+    console.error('Hiba a partner adatainak betoltese kozben:', err)
   }
 })
 
@@ -140,10 +149,7 @@ onMounted(() => {
             <div class="grid gap-4 md:grid-cols-2">
               <div class="space-y-2">
                 <Label for="customer_id">Partner *</Label>
-                <Select id="customer_id" v-model.number="formData.customer_id" required>
-                  <option :value="0">Valassz partnert</option>
-                  <option v-for="customer in options.customers" :key="customer.id" :value="customer.id">{{ customer.name }}</option>
-                </Select>
+                <CustomerSelect id="customer_id" v-model="formData.customer_id" />
                 <FieldError v-if="errors.customer_id" :message="errors.customer_id" />
               </div>
 
