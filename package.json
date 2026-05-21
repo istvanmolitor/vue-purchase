@@ -1,0 +1,12 @@
+{
+  "name": "@molitor/vue-purchase",
+  "version": "1.0.0",
+  "description": "Purchase management admin package",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    }
+  }
+}
+
