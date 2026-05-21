@@ -27,6 +27,13 @@ const formData = ref<PurchaseStatusFormData>({
   description: '',
 })
 
+const stateOptions = [
+  { value: 0, label: 'Kezdeti' },
+  { value: 1, label: 'Folyamatban' },
+  { value: 2, label: 'Lezart' },
+  { value: 3, label: 'Torolt' },
+]
+
 const fetchData = async () => {
   try {
     const response = await purchaseStatusService.getById(route.params.id as string)
@@ -67,7 +74,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <AdminLayout>
+  <AdminLayout page-title="Beszerzesi statusz szerkesztese">
     <div class="space-y-6">
       <h1 class="text-3xl font-bold tracking-tight">Beszerzesi statusz szerkesztese</h1>
 
@@ -88,12 +95,12 @@ onMounted(() => {
 
             <div class="space-y-2">
               <Label for="state">Allapot *</Label>
-              <Select id="state" v-model.number="formData.state" required>
-                <option :value="0">Kezdeti</option>
-                <option :value="1">Folyamatban</option>
-                <option :value="2">Lezart</option>
-                <option :value="3">Torolt</option>
-              </Select>
+              <Select
+                id="state"
+                :model-value="formData.state"
+                :options="stateOptions"
+                @update:model-value="(value) => { formData.state = Number(value) }"
+              />
               <FieldError v-if="errors.state" :message="errors.state" />
             </div>
 

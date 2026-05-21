@@ -8,9 +8,7 @@ import Card from '@admin/components/ui/Card.vue'
 import CardContent from '@admin/components/ui/CardContent.vue'
 import CardHeader from '@admin/components/ui/CardHeader.vue'
 import CardTitle from '@admin/components/ui/CardTitle.vue'
-import DataTable from '@admin/components/ui/dataTable/DataTable.vue'
-import DataTablePagination from '@admin/components/ui/dataTable/DataTablePagination.vue'
-import DataTableSearch from '@admin/components/ui/dataTable/DataTableSearch.vue'
+import DataTable, { type Column, type PaginationMeta } from '@admin/components/ui/dataTable/DataTable.vue'
 import DeleteButton from '@admin/components/ui/button/DeleteButton.vue'
 import EditButton from '@admin/components/ui/button/EditButton.vue'
 import { toastService } from '@admin/lib/toastService'
@@ -20,20 +18,22 @@ const router = useRouter()
 const purchases = ref<Purchase[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
-const currentPage = ref(1)
-const lastPage = ref(1)
-const total = ref(0)
 const search = ref('')
 const sort = ref('id')
 const direction = ref<'asc' | 'desc'>('desc')
+const pagination = ref<PaginationMeta>({
+  current_page: 1,
+  last_page: 1,
+  per_page: 10,
+  total: 0,
+})
 
-const columns = [
-  { key: 'id', label: 'ID' },
-  { key: 'customer', label: 'Partner' },
-  { key: 'status', label: 'Statusz' },
-  { key: 'total_price', label: 'Vegosszeg' },
-  { key: 'expected_delivery_date', label: 'Varhato erkezes' },
-  { key: 'actions', label: 'Muveletek' },
+const columns: Column<Purchase>[] = [
+  { key: 'id', label: 'ID', sortable: true, width: '80px' },
+  { key: 'customer', label: 'Partner', sortable: true },
+  { key: 'status', label: 'Statusz', sortable: true },
+  { key: 'total_price', label: 'Vegosszeg', sortable: true },
+  { key: 'expected_delivery_date', label: 'Varhato erkezes', sortable: true },
 ]
 
 const rows = computed(() => purchases.value.map((purchase) => ({
@@ -43,41 +43,37 @@ const rows = computed(() => purchases.value.map((purchase) => ({
   total_price: purchase.total_price != null
     ? `${purchase.total_price} ${purchase.currency?.code ?? ''}`.trim()
     : '-',
+  expected_delivery_date: purchase.expected_delivery_date ?? '-',
 })))
 
-const fetchPurchases = async (page = 1) => {
+const fetchPurchases = async (params: {
+  search?: string
+  sort?: string
+  direction?: 'asc' | 'desc'
+  page?: number
+} = {}) => {
   loading.value = true
   error.value = null
 
   try {
     const response = await purchaseService.getAll({
-      page,
-      search: search.value || undefined,
-      sort: sort.value,
-      direction: direction.value,
+      page: params.page,
+      search: params.search !== undefined ? params.search : (search.value || undefined),
+      sort: params.sort ?? sort.value,
+      direction: params.direction ?? direction.value,
     })
 
     purchases.value = response.data.data
-    currentPage.value = response.data.meta.current_page
-    lastPage.value = response.data.meta.last_page
-    total.value = response.data.meta.total
+    pagination.value = response.data.meta
+    search.value = params.search ?? search.value
+    sort.value = params.sort ?? sort.value
+    direction.value = params.direction ?? direction.value
   } catch (err: any) {
     error.value = err.message || 'Hiba tortent a beszerzesek betoltese kozben.'
     toastService.error(error.value)
   } finally {
     loading.value = false
   }
-}
-
-const handleSort = (column: string) => {
-  if (sort.value === column) {
-    direction.value = direction.value === 'asc' ? 'desc' : 'asc'
-  } else {
-    sort.value = column
-    direction.value = 'asc'
-  }
-
-  fetchPurchases(1)
 }
 
 const handleDelete = async (id?: number) => {
@@ -92,68 +88,62 @@ const handleDelete = async (id?: number) => {
   try {
     await purchaseService.delete(id)
     toastService.success('Beszerzes sikeresen torolve.')
-    fetchPurchases(currentPage.value)
+    await fetchPurchases({ page: pagination.value.current_page })
   } catch (err: any) {
     toastService.error(err.message || 'Hiba tortent a torles kozben.')
   }
 }
 
 onMounted(() => {
-  fetchPurchases()
+  fetchPurchases({ page: 1, sort: 'id', direction: 'desc' })
 })
 </script>
 
 <template>
-  <AdminLayout>
+  <AdminLayout page-title="Beszerzesek">
     <div class="space-y-6">
-      <div class="flex items-center justify-between">
-        <h1 class="text-3xl font-bold tracking-tight">Beszerzesek</h1>
-        <Button class="gap-2" @click="router.push({ name: 'purchase.create' })">
-          <Plus class="h-4 w-4" />
-          Uj beszerzes
-        </Button>
-      </div>
+      <h1 class="text-3xl font-bold tracking-tight">Beszerzesek</h1>
 
       <Card>
         <CardHeader class="pb-3">
           <CardTitle>Beszerzesek kezelese</CardTitle>
         </CardHeader>
         <CardContent class="space-y-4">
-          <DataTableSearch
-            v-model="search"
-            placeholder="Kereses URL vagy megjegyzes alapjan..."
-            @search="fetchPurchases()"
-          />
-
           <div v-if="error" class="rounded-md bg-red-50 p-4 text-sm text-red-700">
             {{ error }}
           </div>
 
           <DataTable
             :columns="columns"
-            :rows="rows"
+            :data="rows"
             :loading="loading"
-            @sort="handleSort"
-            @row-click="(row) => router.push({ name: 'purchase.show', params: { id: row.id } })"
+            :pagination="pagination"
+            :searchable="true"
+            search-placeholder="Kereses URL vagy megjegyzes alapjan..."
+            default-sort="id"
+            default-direction="desc"
+            @fetch="fetchPurchases"
           >
-            <template #cell-actions="{ row }">
+            <template #actions>
+              <Button class="gap-2" @click="router.push({ name: 'purchase.create' })">
+                <Plus class="h-4 w-4" />
+                Uj beszerzes
+              </Button>
+            </template>
+            <template #row-actions="{ row }">
               <div class="flex gap-2">
-                <EditButton @click="router.push({ name: 'purchase.edit', params: { id: row.id } })" />
-                <DeleteButton @click="handleDelete(row.id)" />
+                <Button variant="ghost" size="icon-sm" @click="router.push({ name: 'purchase.show', params: { id: (row as Purchase).id } })" title="Megnyitas">Megnyit</Button>
+                <EditButton @click="router.push({ name: 'purchase.edit', params: { id: (row as Purchase).id } })" />
+                <DeleteButton @click="handleDelete((row as Purchase).id)" />
               </div>
             </template>
+            <template #empty>
+              Nincs megjelenitheto beszerzes.
+            </template>
           </DataTable>
-
-          <DataTablePagination
-            :current-page="currentPage"
-            :last-page="lastPage"
-            :total="total"
-            @page-change="fetchPurchases"
-          />
         </CardContent>
       </Card>
     </div>
   </AdminLayout>
 </template>
-
 
