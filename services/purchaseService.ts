@@ -53,6 +53,12 @@ export interface PurchaseStatus {
   description?: string | null
 }
 
+export interface PurchaseExtraItem {
+  id: number
+  name: string
+  description?: string | null
+}
+
 export interface PurchaseLog {
   id: number
   purchase_status: string | null

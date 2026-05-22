@@ -1,5 +1,5 @@
 import { MenuBuilder, type MenuItemConfig } from '@menu/index'
-import { BadgeCheck, ShoppingBag } from 'lucide-vue-next'
+import { BadgeCheck, PackagePlus, ShoppingBag } from 'lucide-vue-next'
 
 export class PurchaseMenuBuilder extends MenuBuilder {
   build(menu: MenuItemConfig, menuName: string): MenuItemConfig {
@@ -30,6 +30,13 @@ export class PurchaseMenuBuilder extends MenuBuilder {
           icon: BadgeCheck,
           path: '/admin/purchase-status',
           order: 20,
+        },
+        {
+          id: 'purchase-extra-items',
+          title: 'Extra tetelek',
+          icon: PackagePlus,
+          path: '/admin/purchase-extra-item',
+          order: 30,
         },
       ],
     }

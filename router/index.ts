@@ -43,6 +43,24 @@ const purchaseRoutes: RouteRecordRaw[] = [
     component: () => import('../views/PurchaseStatusEdit.vue'),
     meta: { requiresAuth: true, role: 'admin' }
   },
+  {
+    path: '/admin/purchase-extra-item',
+    name: 'purchase-extra-item.index',
+    component: () => import('../views/PurchaseExtraItems.vue'),
+    meta: { requiresAuth: true, role: 'admin' }
+  },
+  {
+    path: '/admin/purchase-extra-item/create',
+    name: 'purchase-extra-item.create',
+    component: () => import('../views/PurchaseExtraItemCreate.vue'),
+    meta: { requiresAuth: true, role: 'admin' }
+  },
+  {
+    path: '/admin/purchase-extra-item/:id/edit',
+    name: 'purchase-extra-item.edit',
+    component: () => import('../views/PurchaseExtraItemEdit.vue'),
+    meta: { requiresAuth: true, role: 'admin' }
+  },
 ]
 
 export default purchaseRoutes

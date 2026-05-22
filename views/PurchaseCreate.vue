@@ -23,6 +23,13 @@ import { customerApi } from '@customer/services/customerApi'
 
 const router = useRouter()
 const loading = ref(false)
+const getTodayDate = (): string => {
+  const today = new Date()
+  const timezoneOffset = today.getTimezoneOffset() * 60_000
+
+  return new Date(today.getTime() - timezoneOffset).toISOString().split('T')[0]
+}
+
 const options = ref<PurchaseFormOptions>({
   customers: [],
   currencies: [],
@@ -38,7 +45,7 @@ const formData = ref<PurchaseFormData>({
   currency_id: 0,
   comment: '',
   url: '',
-  purchase_date: '',
+  purchase_date: getTodayDate(),
   expected_delivery_date: '',
   delivery_date: '',
   total_price: null,
