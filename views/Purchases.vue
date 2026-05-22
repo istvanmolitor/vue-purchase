@@ -127,7 +127,7 @@ onMounted(() => {
             <template #actions>
               <Button class="gap-2" @click="router.push({ name: 'purchase.create' })">
                 <Plus class="h-4 w-4" />
-                Uj beszerzes
+                Új beszerzes
               </Button>
             </template>
             <template #row-actions="{ row }">
