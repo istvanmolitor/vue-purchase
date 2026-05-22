@@ -6,7 +6,9 @@ export interface PurchaseOption {
   id: number
   name: string
   code?: string
+  symbol?: string
   currency_id?: number | null
+  is_symbol_first?: boolean
   state?: number
   description?: string | null
 }

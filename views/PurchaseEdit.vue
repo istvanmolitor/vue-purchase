@@ -14,6 +14,7 @@ import Label from '@admin/components/ui/Label.vue'
 import Select from '@admin/components/ui/Select.vue'
 import Textarea from '@admin/components/ui/Textarea.vue'
 import { toastService } from '@admin/lib/toastService'
+import PurchasePriceInput from '../components/PurchasePriceInput.vue'
 import { CustomerSelect } from '@customer'
 import { CurrencySelect } from '@currency'
 import { ProductSelect } from '@product'
@@ -205,7 +206,12 @@ onMounted(() => {
             <div class="grid gap-4 md:grid-cols-2">
               <div class="space-y-2">
                 <Label for="total_price">Vegosszeg</Label>
-                <Input id="total_price" v-model.number="formData.total_price" type="number" min="0" step="0.01" />
+                <PurchasePriceInput
+                  id="total_price"
+                  v-model="formData.total_price"
+                  :currency-id="formData.currency_id"
+                  :currencies="options.currencies"
+                />
               </div>
               <div class="space-y-2">
                 <Label for="url">URL</Label>
@@ -241,8 +247,13 @@ onMounted(() => {
                   <Input :id="`item_quantity_${index}`" v-model.number="item.quantity" type="number" min="0.0001" step="0.0001" required />
                 </div>
                 <div class="space-y-2">
-                  <Label :for="`item_price_${index}`">Ar</Label>
-                  <Input :id="`item_price_${index}`" v-model.number="item.price" type="number" min="0" step="0.01" />
+                  <Label :for="`item_price_${index}`">Ár</Label>
+                  <PurchasePriceInput
+                    :id="`item_price_${index}`"
+                    v-model="item.price"
+                    :currency-id="formData.currency_id"
+                    :currencies="options.currencies"
+                  />
                 </div>
                 <div class="space-y-2 md:col-span-3">
                   <Label :for="`item_comment_${index}`">Megjegyzes</Label>
