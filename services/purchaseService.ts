@@ -25,6 +25,18 @@ export interface PurchaseItem {
   }
 }
 
+export interface PurchaseExtraItem {
+  id?: number
+  purchase_extra_item_type_id: number
+  price?: number | null
+  comment?: string
+  purchase_extra_item_type?: {
+    id: number
+    name: string
+    description?: string | null
+  }
+}
+
 export interface Purchase {
   id?: number
   purchase_status_id: number
@@ -38,6 +50,7 @@ export interface Purchase {
   total_price?: number | null
   currency_id: number
   purchase_items: PurchaseItem[]
+  purchase_extra_items?: PurchaseExtraItem[]
   customer?: PurchaseOption
   currency?: PurchaseOption
   warehouse?: PurchaseOption
@@ -79,6 +92,7 @@ export interface PurchaseFormData {
   total_price?: number | null
   currency_id: number
   purchase_items: PurchaseItem[]
+  purchase_extra_items?: PurchaseExtraItem[]
 }
 
 export interface PurchaseFormOptions {
@@ -87,6 +101,7 @@ export interface PurchaseFormOptions {
   warehouses: PurchaseOption[]
   purchase_statuses: PurchaseStatus[]
   products: PurchaseOption[]
+  purchase_extra_item_types?: PurchaseExtraItemType[]
 }
 
 export interface PaginatedResponse<T> {

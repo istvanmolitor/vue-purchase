@@ -31,6 +31,7 @@ const options = ref<PurchaseFormOptions>({
   warehouses: [],
   purchase_statuses: [],
   products: [],
+  purchase_extra_item_types: [],
 })
 const errors = ref<Record<string, string>>({})
 const formData = ref<PurchaseFormData>({
@@ -45,6 +46,7 @@ const formData = ref<PurchaseFormData>({
   delivery_date: '',
   total_price: null,
   purchase_items: [],
+  purchase_extra_items: [],
 })
 
 const fetchFormData = async () => {
@@ -71,6 +73,12 @@ const fetchFormData = async () => {
         price: item.price ?? null,
         comment: item.comment ?? '',
       })),
+      purchase_extra_items: (response.data.data.purchase_extra_items || []).map((item) => ({
+        id: item.id,
+        purchase_extra_item_type_id: item.purchase_extra_item_type_id,
+        price: item.price ?? null,
+        comment: item.comment ?? '',
+      })),
     }
 
     if (formData.value.purchase_items.length === 0) {
@@ -93,6 +101,19 @@ const removeItem = (index: number) => {
   }
 
   formData.value.purchase_items.splice(index, 1)
+}
+
+const addExtraItem = () => {
+  if (!formData.value.purchase_extra_items) {
+    formData.value.purchase_extra_items = []
+  }
+  formData.value.purchase_extra_items.push({ purchase_extra_item_type_id: 0, price: null, comment: '' })
+}
+
+const removeExtraItem = (index: number) => {
+  if (formData.value.purchase_extra_items && formData.value.purchase_extra_items.length > 0) {
+    formData.value.purchase_extra_items.splice(index, 1)
+  }
 }
 
 const submit = async () => {
@@ -261,6 +282,41 @@ onMounted(() => {
                 </div>
                 <div class="flex items-end justify-end">
                   <button class="text-sm text-red-600" type="button" @click="removeItem(index)">Tetel torlese</button>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="options.purchase_extra_item_types && options.purchase_extra_item_types.length > 0" class="space-y-4 border-t pt-6">
+              <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold">Extra tetelek</h2>
+                <button class="text-sm text-blue-600" type="button" @click="addExtraItem">+ Extra tetel hozzaadasa</button>
+              </div>
+
+              <div v-for="(item, index) in formData.purchase_extra_items" :key="`extra_${index}`" class="grid gap-4 rounded-md border p-4 md:grid-cols-3">
+                <div class="space-y-2 md:col-span-2">
+                  <Label :for="`extra_item_type_${index}`">Tetel tipusa *</Label>
+                  <Select :id="`extra_item_type_${index}`" v-model.number="item.purchase_extra_item_type_id" required>
+                    <option :value="0">Valassz extra tetelt</option>
+                    <option v-for="type in options.purchase_extra_item_types" :key="type.id" :value="type.id">
+                      {{ type.name }}
+                    </option>
+                  </Select>
+                </div>
+                <div class="space-y-2">
+                  <Label :for="`extra_item_price_${index}`">Ar</Label>
+                  <PurchasePriceInput
+                    :id="`extra_item_price_${index}`"
+                    v-model="item.price"
+                    :currency-id="formData.currency_id"
+                    :currencies="options.currencies"
+                  />
+                </div>
+                <div class="space-y-2 md:col-span-3">
+                  <Label :for="`extra_item_comment_${index}`">Megjegyzes</Label>
+                  <Input :id="`extra_item_comment_${index}`" v-model="item.comment" type="text" />
+                </div>
+                <div class="flex items-end justify-end">
+                  <button class="text-sm text-red-600" type="button" @click="removeExtraItem(index)">Tetel torlese</button>
                 </div>
               </div>
             </div>
