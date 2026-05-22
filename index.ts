@@ -1,7 +1,7 @@
 // Services
 export { purchaseService } from './services/purchaseService'
 export { purchaseStatusService } from './services/purchaseStatusService'
-export { purchaseExtraItemService } from './services/purchaseExtraItemService'
+export { purchaseExtraItemTypeService } from './services/purchaseExtraItemTypeService'
 export type {
   Purchase,
   PurchaseFormData,
@@ -13,7 +13,7 @@ export type {
   SingleResponse,
 } from './services/purchaseService'
 export type { PurchaseStatusFormData } from './services/purchaseStatusService'
-export type { PurchaseExtraItemFormData } from './services/purchaseExtraItemService'
+export type { PurchaseExtraItemType, PurchaseExtraItemTypeFormData } from './services/purchaseExtraItemTypeService'
 
 // Router
 export { default as router } from './router/index'

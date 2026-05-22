@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import AdminLayout from '@admin/components/layout/AdminLayout.vue'
 import Card from '@admin/components/ui/Card.vue'
 import CardContent from '@admin/components/ui/CardContent.vue'
@@ -13,24 +13,40 @@ import Input from '@admin/components/ui/Input.vue'
 import Label from '@admin/components/ui/Label.vue'
 import Textarea from '@admin/components/ui/Textarea.vue'
 import { toastService } from '@admin/lib/toastService'
-import { purchaseExtraItemService, type PurchaseExtraItemFormData } from '../services/purchaseExtraItemService'
+import { purchaseExtraItemTypeService, type PurchaseExtraItemTypeFormData } from '../services/purchaseExtraItemTypeService'
 
 const router = useRouter()
+const route = useRoute()
 const loading = ref(false)
+const fetching = ref(true)
 const errors = ref<Record<string, string>>({})
-const formData = ref<PurchaseExtraItemFormData>({
+const formData = ref<PurchaseExtraItemTypeFormData>({
   name: '',
   description: '',
 })
+
+const fetchData = async () => {
+  try {
+    const response = await purchaseExtraItemTypeService.getById(route.params.id as string)
+    formData.value = {
+      name: response.data.data.name,
+      description: response.data.data.description || '',
+    }
+  } catch (err: any) {
+    toastService.error(err.message || 'Hiba tortent az adatok betoltese kozben.')
+  } finally {
+    fetching.value = false
+  }
+}
 
 const submit = async () => {
   loading.value = true
   errors.value = {}
 
   try {
-    await purchaseExtraItemService.create(formData.value)
-    toastService.success('Extra tetel sikeresen letrehozva.')
-    router.push({ name: 'purchase-extra-item.index' })
+    await purchaseExtraItemTypeService.update(route.params.id as string, formData.value)
+    toastService.success('Extra tetel tipus sikeresen frissitve.')
+    router.push({ name: 'purchase-extra-item-type.index' })
   } catch (err: any) {
     if (err.response?.data?.errors) {
       errors.value = err.response.data.errors
@@ -41,17 +57,23 @@ const submit = async () => {
     loading.value = false
   }
 }
+
+onMounted(() => {
+  fetchData()
+})
 </script>
 
 <template>
-  <AdminLayout page-title="Uj beszerzesi extra tetel">
+  <AdminLayout page-title="Beszerzesi extra tetel tipus szerkesztese">
     <div class="space-y-6">
-      <h1 class="text-3xl font-bold tracking-tight">Uj beszerzesi extra tetel</h1>
+      <h1 class="text-3xl font-bold tracking-tight">Beszerzesi extra tetel tipus szerkesztese</h1>
 
-      <Card>
+      <div v-if="fetching" class="py-8 text-center text-muted-foreground">Betoltes...</div>
+
+      <Card v-else>
         <CardHeader>
-          <CardTitle>Extra tetel adatai</CardTitle>
-          <CardDescription>Add meg az uj extra tetel adatait.</CardDescription>
+          <CardTitle>Extra tetel tipus adatai</CardTitle>
+          <CardDescription>Modositsd az extra tetel tipus adatait.</CardDescription>
         </CardHeader>
         <CardContent>
           <form class="space-y-6" @submit.prevent="submit">
@@ -69,10 +91,10 @@ const submit = async () => {
 
             <FormButtons
               :loading="loading"
-              submit-text="Letrehozas"
+              submit-text="Mentes"
               cancel-text="Vissza"
               @submit="submit"
-              @cancel="router.push({ name: 'purchase-extra-item.index' })"
+              @cancel="router.push({ name: 'purchase-extra-item-type.index' })"
             />
           </form>
         </CardContent>
@@ -80,4 +102,5 @@ const submit = async () => {
     </div>
   </AdminLayout>
 </template>
+
 

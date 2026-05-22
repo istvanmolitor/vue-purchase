@@ -32,10 +32,10 @@ export class PurchaseMenuBuilder extends MenuBuilder {
           order: 20,
         },
         {
-          id: 'purchase-extra-items',
-          title: 'Extra tetelek',
+          id: 'purchase-extra-item-types',
+          title: 'Extra tetel tipusok',
           icon: PackagePlus,
-          path: '/admin/purchase-extra-item',
+          path: '/admin/purchase-extra-item-type',
           order: 30,
         },
       ],

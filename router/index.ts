@@ -44,21 +44,21 @@ const purchaseRoutes: RouteRecordRaw[] = [
     meta: { requiresAuth: true, role: 'admin' }
   },
   {
-    path: '/admin/purchase-extra-item',
-    name: 'purchase-extra-item.index',
-    component: () => import('../views/PurchaseExtraItems.vue'),
+    path: '/admin/purchase-extra-item-type',
+    name: 'purchase-extra-item-type.index',
+    component: () => import('../views/PurchaseExtraItemTypes.vue'),
     meta: { requiresAuth: true, role: 'admin' }
   },
   {
-    path: '/admin/purchase-extra-item/create',
-    name: 'purchase-extra-item.create',
-    component: () => import('../views/PurchaseExtraItemCreate.vue'),
+    path: '/admin/purchase-extra-item-type/create',
+    name: 'purchase-extra-item-type.create',
+    component: () => import('../views/PurchaseExtraItemTypeCreate.vue'),
     meta: { requiresAuth: true, role: 'admin' }
   },
   {
-    path: '/admin/purchase-extra-item/:id/edit',
-    name: 'purchase-extra-item.edit',
-    component: () => import('../views/PurchaseExtraItemEdit.vue'),
+    path: '/admin/purchase-extra-item-type/:id/edit',
+    name: 'purchase-extra-item-type.edit',
+    component: () => import('../views/PurchaseExtraItemTypeEdit.vue'),
     meta: { requiresAuth: true, role: 'admin' }
   },
 ]
