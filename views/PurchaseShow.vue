@@ -105,6 +105,7 @@ onMounted(() => {
               :rows="(purchase.purchase_items || []).map((item) => ({
                 ...item,
                 product: item.product?.name || '-',
+                quantity: item.product?.product_unit?.name ? `${item.quantity} ${item.product.product_unit.name}` : item.quantity,
                 price: item.price ?? '-',
                 comment: item.comment || '-',
               }))"

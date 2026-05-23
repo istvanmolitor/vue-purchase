@@ -103,6 +103,14 @@ const removeItem = (index: number) => {
   formData.value.purchase_items.splice(index, 1)
 }
 
+const getProductUnitName = (productId: number): string => {
+  if (!productId) {
+    return ''
+  }
+
+  return options.value.products.find((product) => product.id === productId)?.product_unit?.name ?? ''
+}
+
 const addExtraItem = () => {
   if (!formData.value.purchase_extra_items) {
     formData.value.purchase_extra_items = []
@@ -265,7 +273,10 @@ onMounted(() => {
                 </div>
                 <div class="space-y-2">
                   <Label :for="`item_quantity_${index}`">Mennyiseg *</Label>
-                  <Input :id="`item_quantity_${index}`" v-model.number="item.quantity" type="number" min="0.0001" step="0.0001" required />
+                  <div class="flex items-center gap-2">
+                    <Input :id="`item_quantity_${index}`" v-model.number="item.quantity" type="number" min="0.0001" step="0.0001" required />
+                    <span class="shrink-0 text-sm text-muted-foreground">{{ getProductUnitName(item.product_id) || '-' }}</span>
+                  </div>
                 </div>
                 <div class="space-y-2">
                   <Label :for="`item_price_${index}`">Ár</Label>

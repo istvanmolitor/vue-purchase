@@ -7,10 +7,16 @@ export interface PurchaseOption {
   name: string
   code?: string
   symbol?: string
+  sku?: string
+  image_url?: string | null
   currency_id?: number | null
   is_symbol_first?: boolean
   state?: number
   description?: string | null
+  product_unit?: {
+    id: number
+    name: string
+  } | null
 }
 
 export interface PurchaseItem {
@@ -22,6 +28,10 @@ export interface PurchaseItem {
   product?: {
     id: number
     name: string
+    product_unit?: {
+      id: number
+      name: string
+    } | null
   }
 }
 
