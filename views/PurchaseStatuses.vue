@@ -35,6 +35,17 @@ const columns: Column<PurchaseStatus>[] = [
   { key: 'description', label: 'Leiras', sortable: true },
 ]
 
+const purchaseStateLabels: Record<number, string> = {
+  0: 'Kezdeti',
+  1: 'Folyamatban',
+  2: 'Lezart',
+  3: 'Torolt',
+}
+
+const getPurchaseStateLabel = (state: number): string => {
+  return purchaseStateLabels[state] ?? String(state)
+}
+
 const fetchStatuses = async (params: {
   search?: string
   sort?: string
@@ -103,6 +114,9 @@ onMounted(() => {
             default-direction="asc"
             @fetch="fetchStatuses"
           >
+            <template #state="{ row }">
+              {{ getPurchaseStateLabel((row as PurchaseStatus).state) }}
+            </template>
             <template #actions>
               <Button class="gap-2" @click="router.push({ name: 'purchase-status.create' })">
                 <Plus class="h-4 w-4" />
