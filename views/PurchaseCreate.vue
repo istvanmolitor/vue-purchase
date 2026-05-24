@@ -8,7 +8,9 @@ import CardDescription from '@admin/components/ui/CardDescription.vue'
 import CardHeader from '@admin/components/ui/CardHeader.vue'
 import CardTitle from '@admin/components/ui/CardTitle.vue'
 import FieldError from '@admin/components/ui/FieldError.vue'
+import Button from '@admin/components/ui/button/Button.vue'
 import FormButtons from '@admin/components/ui/button/FormButtons.vue'
+import Icon from '@admin/components/ui/Icon.vue'
 import Input from '@admin/components/ui/Input.vue'
 import Label from '@admin/components/ui/Label.vue'
 import Select from '@admin/components/ui/Select.vue'
@@ -241,14 +243,27 @@ onMounted(() => {
             <div class="space-y-4">
               <div class="flex items-center justify-between">
                 <h2 class="text-lg font-semibold">Tetelek</h2>
-                <button class="text-sm text-blue-600" type="button" @click="addItem">+ Tetel hozzaadasa</button>
+                <Button type="button" variant="outline" size="sm" @click="addItem">
+                  <Icon name="plus" :size="16" />
+                  Tetel hozzaadasa
+                </Button>
               </div>
 
               <div
                 v-for="(item, index) in formData.purchase_items"
                 :key="index"
-                class="grid gap-4 rounded-md border p-4 md:grid-cols-4"
+                class="relative grid gap-4 rounded-md border p-4 pt-10 md:grid-cols-4"
               >
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="icon-sm"
+                  class="absolute top-3 right-3"
+                  @click="removeItem(index)"
+                >
+                  <Icon name="delete" :size="16" />
+                </Button>
+
                 <div class="space-y-2 md:col-span-2">
                   <Label :for="`item_product_${index}`">Termek *</Label>
                   <ProductSelect
@@ -283,20 +298,29 @@ onMounted(() => {
                   <Label :for="`item_comment_${index}`">Megjegyzes</Label>
                   <Input :id="`item_comment_${index}`" v-model="item.comment" type="text" />
                 </div>
-
-                <div class="flex items-end justify-end">
-                  <button class="text-sm text-red-600" type="button" @click="removeItem(index)">Tetel torlese</button>
-                </div>
               </div>
             </div>
 
             <div v-if="options.purchase_extra_item_types && options.purchase_extra_item_types.length > 0" class="space-y-4 border-t pt-6">
               <div class="flex items-center justify-between">
                 <h2 class="text-lg font-semibold">Extra tetelek</h2>
-                <button class="text-sm text-blue-600" type="button" @click="addExtraItem">+ Extra tetel hozzaadasa</button>
+                <Button type="button" variant="outline" size="sm" @click="addExtraItem">
+                  <Icon name="plus" :size="16" />
+                  Extra tetel hozzaadasa
+                </Button>
               </div>
 
-              <div v-for="(item, index) in formData.purchase_extra_items" :key="`extra_${index}`" class="grid gap-4 rounded-md border p-4 md:grid-cols-3">
+              <div v-for="(item, index) in formData.purchase_extra_items" :key="`extra_${index}`" class="relative grid gap-4 rounded-md border p-4 pt-10 md:grid-cols-3">
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="icon-sm"
+                  class="absolute top-3 right-3"
+                  @click="removeExtraItem(index)"
+                >
+                  <Icon name="delete" :size="16" />
+                </Button>
+
                 <div class="space-y-2 md:col-span-2">
                   <Label :for="`extra_item_type_${index}`">Tetel tipusa *</Label>
                   <Select :id="`extra_item_type_${index}`" v-model.number="item.purchase_extra_item_type_id" required>
@@ -318,9 +342,6 @@ onMounted(() => {
                 <div class="space-y-2 md:col-span-3">
                   <Label :for="`extra_item_comment_${index}`">Megjegyzes</Label>
                   <Input :id="`extra_item_comment_${index}`" v-model="item.comment" type="text" />
-                </div>
-                <div class="flex items-end justify-end">
-                  <button class="text-sm text-red-600" type="button" @click="removeExtraItem(index)">Tetel torlese</button>
                 </div>
               </div>
             </div>
