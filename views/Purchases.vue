@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { Plus } from 'lucide-vue-next'
 import AdminLayout from '@admin/components/layout/AdminLayout.vue'
 import Button from '@admin/components/ui/button/Button.vue'
+import ShowButton from '@admin/components/ui/button/ShowButton.vue'
 import Card from '@admin/components/ui/Card.vue'
 import CardContent from '@admin/components/ui/CardContent.vue'
 import CardHeader from '@admin/components/ui/CardHeader.vue'
@@ -132,7 +133,7 @@ onMounted(() => {
             </template>
             <template #row-actions="{ row }">
               <div class="flex gap-2">
-                <Button variant="ghost" size="icon-sm" @click="router.push({ name: 'purchase.show', params: { id: (row as Purchase).id } })" title="Megnyitas">Megnyit</Button>
+                <ShowButton @click="router.push({ name: 'purchase.show', params: { id: (row as Purchase).id } })" />
                 <EditButton @click="router.push({ name: 'purchase.edit', params: { id: (row as Purchase).id } })" />
                 <DeleteButton @click="handleDelete((row as Purchase).id)" />
               </div>
