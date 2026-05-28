@@ -1,5 +1,5 @@
-import { MenuBuilder, type MenuItemConfig } from '@menu/index'
-import { BadgeCheck, PackagePlus, ShoppingBag } from 'lucide-vue-next'
+import { MenuBuilder, type MenuItemConfig } from '@menu'
+import { AlertCircle, BadgeCheck, PackagePlus, ShoppingBag } from 'lucide-vue-next'
 
 export class PurchaseMenuBuilder extends MenuBuilder {
   build(menu: MenuItemConfig, menuName: string): MenuItemConfig {
@@ -17,6 +17,13 @@ export class PurchaseMenuBuilder extends MenuBuilder {
       icon: ShoppingBag,
       order: 41,
       children: [
+        {
+          id: 'purchase-requirements',
+          title: 'Szükséges beszerzések',
+          icon: AlertCircle,
+          path: '/admin/purchase/requirements',
+          order: 5,
+        },
         {
           id: 'purchases',
           title: 'Beszerzesek',

@@ -8,6 +8,12 @@ const purchaseRoutes: RouteRecordRaw[] = [
     meta: { requiresAuth: true, role: 'admin' }
   },
   {
+    path: '/admin/purchase/requirements',
+    name: 'purchase.requirements',
+    component: () => import('../views/PurchaseRequirements.vue'),
+    meta: { requiresAuth: true, role: 'admin' }
+  },
+  {
     path: '/admin/purchase/create',
     name: 'purchase.create',
     component: () => import('../views/PurchaseCreate.vue'),
@@ -64,4 +70,3 @@ const purchaseRoutes: RouteRecordRaw[] = [
 ]
 
 export default purchaseRoutes
-
