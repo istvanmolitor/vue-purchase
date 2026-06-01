@@ -16,6 +16,7 @@ export class PurchaseMenuBuilder extends MenuBuilder {
       title: 'Beszerzes',
       icon: ShoppingBag,
       order: 41,
+      permission: ['purchase', 'purchase_status'],
       children: [
         {
           id: 'purchase-requirements',
@@ -23,6 +24,7 @@ export class PurchaseMenuBuilder extends MenuBuilder {
           icon: AlertCircle,
           path: '/admin/purchase/requirements',
           order: 5,
+          permission: 'purchase',
         },
         {
           id: 'purchases',
@@ -30,6 +32,7 @@ export class PurchaseMenuBuilder extends MenuBuilder {
           icon: ShoppingBag,
           path: '/admin/purchase',
           order: 10,
+          permission: 'purchase',
         },
         {
           id: 'purchase-statuses',
@@ -37,6 +40,7 @@ export class PurchaseMenuBuilder extends MenuBuilder {
           icon: BadgeCheck,
           path: '/admin/purchase-status',
           order: 20,
+          permission: 'purchase_status',
         },
         {
           id: 'purchase-extra-item-types',
@@ -44,6 +48,7 @@ export class PurchaseMenuBuilder extends MenuBuilder {
           icon: PackagePlus,
           path: '/admin/purchase-extra-item-type',
           order: 30,
+          permission: 'purchase',
         },
       ],
     }
