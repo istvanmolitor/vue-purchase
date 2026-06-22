@@ -30,7 +30,6 @@ const pagination = ref<PaginationMeta>({
 })
 
 const columns: Column<Purchase>[] = [
-  { key: 'id', label: 'ID', sortable: true, width: '80px' },
   { key: 'customer', label: 'Partner', sortable: true },
   { key: 'status', label: 'Statusz', sortable: true },
   { key: 'total_price', label: 'Vegosszeg', sortable: true },

@@ -28,7 +28,6 @@ const pagination = ref<PaginationMeta>({
 })
 
 const columns: Column<PurchaseExtraItemType>[] = [
-  { key: 'id', label: 'ID', sortable: true, width: '80px' },
   { key: 'name', label: 'Nev', sortable: true },
   { key: 'description', label: 'Leiras', sortable: true },
 ]
