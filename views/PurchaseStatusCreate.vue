@@ -9,8 +9,7 @@ import CardHeader from '@admin/components/ui/CardHeader.vue'
 import CardTitle from '@admin/components/ui/CardTitle.vue'
 import FieldError from '@admin/components/ui/FieldError.vue'
 import FormButtons from '@admin/components/ui/button/FormButtons.vue'
-import Input from '@admin/components/ui/Input.vue'
-import Label from '@admin/components/ui/Label.vue'
+import InputField from '@admin/components/ui/InputField.vue'
 import Select from '@admin/components/ui/Select.vue'
 import Textarea from '@admin/components/ui/Textarea.vue'
 import { toastService } from '@admin/lib/toastService'
@@ -64,11 +63,7 @@ const submit = async () => {
         </CardHeader>
         <CardContent>
           <form class="space-y-6" @submit.prevent="submit">
-            <div class="space-y-2">
-              <Label for="name">Nev *</Label>
-              <Input id="name" v-model="formData.name" required />
-              <FieldError v-if="errors.name" :message="errors.name" />
-            </div>
+            <InputField id="name" label="Nev" v-model="formData.name" :required="true" :errors="errors.name" />
 
             <div class="space-y-2">
               <Label for="state">Allapot *</Label>

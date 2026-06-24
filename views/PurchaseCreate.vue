@@ -12,6 +12,7 @@ import Button from '@admin/components/ui/button/Button.vue'
 import FormButtons from '@admin/components/ui/button/FormButtons.vue'
 import Icon from '@admin/components/ui/Icon.vue'
 import Input from '@admin/components/ui/Input.vue'
+import InputField from '@admin/components/ui/InputField.vue'
 import Label from '@admin/components/ui/Label.vue'
 import Select from '@admin/components/ui/Select.vue'
 import Textarea from '@admin/components/ui/Textarea.vue'
@@ -229,11 +230,7 @@ onMounted(() => {
               </div>
             </div>
 
-            <div class="space-y-2">
-              <Label for="url">URL</Label>
-              <Input id="url" v-model="formData.url" type="url" placeholder="https://" />
-              <FieldError v-if="errors.url" :message="errors.url" />
-            </div>
+            <InputField id="url" label="URL" v-model="formData.url" :type="'url'" placeholder="https://" :errors="errors.url" />
 
             <div class="space-y-2">
               <Label for="comment">Megjegyzes</Label>
