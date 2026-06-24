@@ -304,7 +304,7 @@ onMounted(() => {
                 </div>
                 <div class="space-y-2 md:col-span-3">
                   <Label :for="`item_comment_${index}`">Megjegyzes</Label>
-                  <Input :id="`item_comment_${index}`" v-model="item.comment" type="text" />
+                  <Input :id="`item_comment_${index}`" v-model="item.comment" />
                 </div>
               </div>
             </div>
@@ -349,7 +349,7 @@ onMounted(() => {
                 </div>
                 <div class="space-y-2 md:col-span-3">
                   <Label :for="`extra_item_comment_${index}`">Megjegyzes</Label>
-                  <Input :id="`extra_item_comment_${index}`" v-model="item.comment" type="text" />
+                  <Input :id="`extra_item_comment_${index}`" v-model="item.comment" />
                 </div>
               </div>
             </div>
