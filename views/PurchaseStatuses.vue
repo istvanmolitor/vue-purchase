@@ -28,11 +28,7 @@ const pagination = ref<PaginationMeta>({
   total: 0,
 })
 
-const columns: Column<PurchaseStatus>[] = [
-  { key: 'name', label: 'Nev', sortable: true },
-  { key: 'state', label: 'Allapot', sortable: true },
-  { key: 'description', label: 'Leiras', sortable: true },
-]
+const columns = ref<Column[]>([])
 
 const purchaseStateLabels: Record<number, string> = {
   0: 'Kezdeti',
@@ -63,6 +59,7 @@ const fetchStatuses = async (params: {
 
     statuses.value = response.data.data
     pagination.value = response.data.meta
+    columns.value = (response.data.columns ?? []) as Column[]
     search.value = params.search ?? search.value
     sort.value = params.sort ?? sort.value
     direction.value = params.direction ?? direction.value

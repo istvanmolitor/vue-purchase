@@ -29,12 +29,7 @@ const pagination = ref<PaginationMeta>({
   total: 0,
 })
 
-const columns: Column<Purchase>[] = [
-  { key: 'customer', label: 'Partner', sortable: true },
-  { key: 'status', label: 'Statusz', sortable: true },
-  { key: 'total_price', label: 'Vegosszeg', sortable: true },
-  { key: 'expected_delivery_date', label: 'Varhato erkezes', sortable: true },
-]
+const columns = ref<Column[]>([])
 
 const rows = computed(() => purchases.value.map((purchase) => ({
   ...purchase,
@@ -65,6 +60,7 @@ const fetchPurchases = async (params: {
 
     purchases.value = response.data.data
     pagination.value = response.data.meta
+    columns.value = (response.data.columns ?? []) as Column[]
     search.value = params.search ?? search.value
     sort.value = params.sort ?? sort.value
     direction.value = params.direction ?? direction.value

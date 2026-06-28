@@ -27,10 +27,7 @@ const pagination = ref<PaginationMeta>({
   total: 0,
 })
 
-const columns: Column<PurchaseExtraItemType>[] = [
-  { key: 'name', label: 'Nev', sortable: true },
-  { key: 'description', label: 'Leiras', sortable: true },
-]
+const columns = ref<Column[]>([])
 
 const fetchPurchaseExtraItemTypes = async (params: {
   search?: string
@@ -50,6 +47,7 @@ const fetchPurchaseExtraItemTypes = async (params: {
 
     purchaseExtraItemTypes.value = response.data.data
     pagination.value = response.data.meta
+    columns.value = (response.data.columns ?? []) as Column[]
     search.value = params.search ?? search.value
     sort.value = params.sort ?? sort.value
     direction.value = params.direction ?? direction.value
