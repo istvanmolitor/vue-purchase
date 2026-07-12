@@ -204,20 +204,11 @@ onMounted(() => {
                 <FieldError v-if="errors.currency_id" :message="errors.currency_id" />
               </div>
 
-              <div class="space-y-2">
-                <Label for="purchase_date">Beszerzes datuma</Label>
-                <Input id="purchase_date" v-model="formData.purchase_date" type="date" />
-              </div>
+              <InputField id="purchase_date" label="Beszerzes datuma" v-model="formData.purchase_date" type="date" />
 
-              <div class="space-y-2">
-                <Label for="expected_delivery_date">Varhato beerkezes</Label>
-                <Input id="expected_delivery_date" v-model="formData.expected_delivery_date" type="date" />
-              </div>
+              <InputField id="expected_delivery_date" label="Varhato beerkezes" v-model="formData.expected_delivery_date" type="date" />
 
-              <div class="space-y-2">
-                <Label for="delivery_date">Beerkezes datuma</Label>
-                <Input id="delivery_date" v-model="formData.delivery_date" type="date" />
-              </div>
+              <InputField id="delivery_date" label="Beerkezes datuma" v-model="formData.delivery_date" type="date" />
 
               <div class="space-y-2">
                 <Label for="total_price">Vegosszeg</Label>
@@ -291,9 +282,8 @@ onMounted(() => {
                   />
                 </div>
 
-                <div class="space-y-2 md:col-span-3">
-                  <Label :for="`item_comment_${index}`">Megjegyzes</Label>
-                  <Input :id="`item_comment_${index}`" v-model="item.comment" />
+                <div class="md:col-span-3">
+                  <InputField :id="`item_comment_${index}`" label="Megjegyzes" v-model="item.comment" />
                 </div>
               </div>
             </div>
@@ -336,9 +326,8 @@ onMounted(() => {
                     :currencies="options.currencies"
                   />
                 </div>
-                <div class="space-y-2 md:col-span-3">
-                  <Label :for="`extra_item_comment_${index}`">Megjegyzes</Label>
-                  <Input :id="`extra_item_comment_${index}`" v-model="item.comment" />
+                <div class="md:col-span-3">
+                  <InputField :id="`extra_item_comment_${index}`" label="Megjegyzes" v-model="item.comment" />
                 </div>
               </div>
             </div>

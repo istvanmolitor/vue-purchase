@@ -12,6 +12,7 @@ import Button from '@admin/components/ui/button/Button.vue'
 import FormButtons from '@admin/components/ui/button/FormButtons.vue'
 import Icon from '@admin/components/ui/Icon.vue'
 import Input from '@admin/components/ui/Input.vue'
+import InputField from '@admin/components/ui/InputField.vue'
 import Label from '@admin/components/ui/Label.vue'
 import Select from '@admin/components/ui/Select.vue'
 import Textarea from '@admin/components/ui/Textarea.vue'
@@ -220,18 +221,9 @@ onMounted(() => {
             </div>
 
             <div class="grid gap-4 md:grid-cols-3">
-              <div class="space-y-2">
-                <Label for="purchase_date">Beszerzes datuma</Label>
-                <Input id="purchase_date" v-model="formData.purchase_date" type="date" />
-              </div>
-              <div class="space-y-2">
-                <Label for="expected_delivery_date">Varhato beerkezes</Label>
-                <Input id="expected_delivery_date" v-model="formData.expected_delivery_date" type="date" />
-              </div>
-              <div class="space-y-2">
-                <Label for="delivery_date">Beerkezes datuma</Label>
-                <Input id="delivery_date" v-model="formData.delivery_date" type="date" />
-              </div>
+              <InputField id="purchase_date" label="Beszerzes datuma" v-model="formData.purchase_date" type="date" />
+              <InputField id="expected_delivery_date" label="Varhato beerkezes" v-model="formData.expected_delivery_date" type="date" />
+              <InputField id="delivery_date" label="Beerkezes datuma" v-model="formData.delivery_date" type="date" />
             </div>
 
             <div class="grid gap-4 md:grid-cols-2">
@@ -244,10 +236,7 @@ onMounted(() => {
                   :currencies="options.currencies"
                 />
               </div>
-              <div class="space-y-2">
-                <Label for="url">URL</Label>
-                <Input id="url" v-model="formData.url" type="url" placeholder="https://" />
-              </div>
+              <InputField id="url" label="URL" v-model="formData.url" type="url" placeholder="https://" />
             </div>
 
             <div class="space-y-2">
@@ -302,9 +291,8 @@ onMounted(() => {
                     :currencies="options.currencies"
                   />
                 </div>
-                <div class="space-y-2 md:col-span-3">
-                  <Label :for="`item_comment_${index}`">Megjegyzes</Label>
-                  <Input :id="`item_comment_${index}`" v-model="item.comment" />
+                <div class="md:col-span-3">
+                  <InputField :id="`item_comment_${index}`" label="Megjegyzes" v-model="item.comment" />
                 </div>
               </div>
             </div>
@@ -347,9 +335,8 @@ onMounted(() => {
                     :currencies="options.currencies"
                   />
                 </div>
-                <div class="space-y-2 md:col-span-3">
-                  <Label :for="`extra_item_comment_${index}`">Megjegyzes</Label>
-                  <Input :id="`extra_item_comment_${index}`" v-model="item.comment" />
+                <div class="md:col-span-3">
+                  <InputField :id="`extra_item_comment_${index}`" label="Megjegyzes" v-model="item.comment" />
                 </div>
               </div>
             </div>
