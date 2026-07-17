@@ -31,6 +31,19 @@ const pagination = ref<PaginationMeta>({
 
 const columns = ref<Column[]>([])
 
+const daysUntilDelivery = (dateStr?: string | null): number | null => {
+  if (!dateStr) {
+    return null
+  }
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const target = new Date(dateStr)
+  target.setHours(0, 0, 0, 0)
+
+  return Math.round((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+}
+
 const rows = computed(() => purchases.value.map((purchase) => ({
   ...purchase,
   customer: purchase.customer?.name ?? '-',
@@ -39,7 +52,7 @@ const rows = computed(() => purchases.value.map((purchase) => ({
     ? `${purchase.total_price} ${purchase.currency?.code ?? ''}`.trim()
     : '-',
   purchase_date: purchase.purchase_date ?? '-',
-  expected_delivery_date: purchase.expected_delivery_date ?? '-',
+  delivery_days: daysUntilDelivery(purchase.expected_delivery_date),
   items_count: purchase.purchase_items?.length ?? 0,
 })))
 
@@ -121,6 +134,20 @@ onMounted(() => {
                 <Plus class="h-4 w-4" />
                 Új beszerzes
               </Button>
+            </template>
+            <template #cell-expected_delivery_date="{ row }">
+              <span v-if="(row as Purchase & { delivery_days: number | null }).delivery_days === null">-</span>
+              <span
+                v-else
+                :class="[
+                  'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
+                  (row as Purchase & { delivery_days: number | null }).delivery_days! < 0
+                    ? 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400'
+                    : 'text-foreground'
+                ]"
+              >
+                {{ (row as Purchase & { delivery_days: number | null }).delivery_days }} nap
+              </span>
             </template>
             <template #row-actions="{ row }">
               <div class="flex gap-2">
