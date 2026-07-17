@@ -79,10 +79,6 @@ const handleDelete = async (id?: number) => {
     return
   }
 
-  if (!confirm('Biztosan torolni szeretned ezt a beszerzest?')) {
-    return
-  }
-
   try {
     await purchaseService.delete(id)
     toastService.success('Beszerzes sikeresen torolve.')
@@ -130,7 +126,7 @@ onMounted(() => {
               <div class="flex gap-2">
                 <ShowButton @click="router.push({ name: 'purchase.show', params: { id: (row as Purchase).id } })" />
                 <EditButton @click="router.push({ name: 'purchase.edit', params: { id: (row as Purchase).id } })" />
-                <DeleteButton @click="handleDelete((row as Purchase).id)" />
+                <DeleteButton @confirm="handleDelete((row as Purchase).id)" />
               </div>
             </template>
             <template #empty>

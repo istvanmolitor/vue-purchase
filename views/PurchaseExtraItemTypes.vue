@@ -59,7 +59,7 @@ const fetchPurchaseExtraItemTypes = async (params: {
 }
 
 const deletePurchaseExtraItemType = async (id?: number) => {
-  if (!id || !confirm('Biztosan torolni szeretned ezt az extra tetel tipust?')) {
+  if (!id) {
     return
   }
 
@@ -107,7 +107,7 @@ onMounted(() => {
             <template #row-actions="{ row }">
               <div class="flex gap-2">
                 <EditButton @click="router.push({ name: 'purchase-extra-item-type.edit', params: { id: (row as PurchaseExtraItemType).id } })" />
-                <DeleteButton @click="deletePurchaseExtraItemType((row as PurchaseExtraItemType).id)" />
+                <DeleteButton @confirm="deletePurchaseExtraItemType((row as PurchaseExtraItemType).id)" />
               </div>
             </template>
             <template #empty>

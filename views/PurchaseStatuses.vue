@@ -71,7 +71,7 @@ const fetchStatuses = async (params: {
 }
 
 const deleteStatus = async (id?: number) => {
-  if (!id || !confirm('Biztosan torolni szeretned ezt a statuszt?')) {
+  if (!id) {
     return
   }
 
@@ -122,7 +122,7 @@ onMounted(() => {
             <template #row-actions="{ row }">
               <div class="flex gap-2">
                 <EditButton @click="router.push({ name: 'purchase-status.edit', params: { id: (row as PurchaseStatus).id } })" />
-                <DeleteButton @click="deleteStatus((row as PurchaseStatus).id)" />
+                <DeleteButton @confirm="deleteStatus((row as PurchaseStatus).id)" />
               </div>
             </template>
             <template #empty>
