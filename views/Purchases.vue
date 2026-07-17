@@ -38,7 +38,9 @@ const rows = computed(() => purchases.value.map((purchase) => ({
   total_price: purchase.total_price != null
     ? `${purchase.total_price} ${purchase.currency?.code ?? ''}`.trim()
     : '-',
+  purchase_date: purchase.purchase_date ?? '-',
   expected_delivery_date: purchase.expected_delivery_date ?? '-',
+  items_count: purchase.purchase_items?.length ?? 0,
 })))
 
 const fetchPurchases = async (params: {
