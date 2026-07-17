@@ -75,8 +75,6 @@ onMounted(() => {
 <template>
   <AdminLayout page-title="Beszerzesi statusz szerkesztese">
     <div class="space-y-6">
-      <h1 class="text-3xl font-bold tracking-tight">Beszerzesi statusz szerkesztese</h1>
-
       <div v-if="fetching" class="py-8 text-center text-muted-foreground">Betoltes...</div>
 
       <Card v-else>

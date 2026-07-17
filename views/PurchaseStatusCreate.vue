@@ -54,8 +54,6 @@ const submit = async () => {
 <template>
   <AdminLayout page-title="Új beszerzesi statusz">
     <div class="space-y-6">
-      <h1 class="text-3xl font-bold tracking-tight">Új beszerzesi statusz</h1>
-
       <Card>
         <CardHeader>
           <CardTitle>Statusz adatai</CardTitle>
