@@ -98,8 +98,6 @@ onMounted(() => {
 <template>
   <AdminLayout page-title="Beszerzesek">
     <div class="space-y-6">
-      <h1 class="text-3xl font-bold tracking-tight">Beszerzesek</h1>
-
       <Card>
         <CardHeader class="pb-3">
           <CardTitle>Beszerzesek kezelese</CardTitle>
