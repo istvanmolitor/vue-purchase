@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AdminLayout from '@admin/components/layout/AdminLayout.vue'
 import Button from '@admin/components/ui/button/Button.vue'
@@ -62,13 +62,14 @@ const closePurchase = async () => {
 onMounted(() => {
   fetchPurchase()
 })
+
+const pageTitle = computed(() => `Beszerzes #${purchase.value?.id ?? ''}`)
 </script>
 
 <template>
-  <AdminLayout>
+  <AdminLayout :page-title="pageTitle">
     <div class="space-y-6">
-      <div class="flex items-center justify-between">
-        <h1 class="text-3xl font-bold tracking-tight">Beszerzes #{{ purchase?.id }}</h1>
+      <div class="flex items-center justify-end">
         <div class="flex gap-2">
           <Button @click="router.push({ name: 'purchase.edit', params: { id: purchase?.id } })">
             Szerkesztes

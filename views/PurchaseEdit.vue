@@ -168,10 +168,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <AdminLayout>
+  <AdminLayout page-title="Beszerzes szerkesztese">
     <div class="space-y-6">
-      <h1 class="text-3xl font-bold tracking-tight">Beszerzes szerkesztese</h1>
-
       <div v-if="fetching" class="py-8 text-center text-muted-foreground">Betoltes...</div>
 
       <Card v-else>

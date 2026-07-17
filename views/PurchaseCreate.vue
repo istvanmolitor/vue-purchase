@@ -151,10 +151,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <AdminLayout>
+  <AdminLayout page-title="Új beszerzes">
     <div class="space-y-6">
-      <h1 class="text-3xl font-bold tracking-tight">Új beszerzes</h1>
-
       <Card>
         <CardHeader>
           <CardTitle>Beszerzes adatai</CardTitle>
