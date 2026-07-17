@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AdminLayout from '@admin/components/layout/AdminLayout.vue'
+import BackButton from '@admin/components/ui/button/BackButton.vue'
 import Card from '@admin/components/ui/Card.vue'
 import CardContent from '@admin/components/ui/CardContent.vue'
 import CardDescription from '@admin/components/ui/CardDescription.vue'
@@ -170,6 +171,10 @@ onMounted(() => {
 <template>
   <AdminLayout page-title="Beszerzes szerkesztese">
     <div class="space-y-6">
+      <div class="flex items-center justify-between">
+        <BackButton to="/admin/purchase" />
+      </div>
+
       <div v-if="fetching" class="py-8 text-center text-muted-foreground">Betoltes...</div>
 
       <Card v-else>

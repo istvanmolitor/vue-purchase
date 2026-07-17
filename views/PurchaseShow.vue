@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AdminLayout from '@admin/components/layout/AdminLayout.vue'
+import BackButton from '@admin/components/ui/button/BackButton.vue'
 import Button from '@admin/components/ui/button/Button.vue'
 import Card from '@admin/components/ui/Card.vue'
 import CardContent from '@admin/components/ui/CardContent.vue'
@@ -69,7 +70,8 @@ const pageTitle = computed(() => `Beszerzes #${purchase.value?.id ?? ''}`)
 <template>
   <AdminLayout :page-title="pageTitle">
     <div class="space-y-6">
-      <div class="flex items-center justify-end">
+      <div class="flex items-center justify-between">
+        <BackButton to="/admin/purchase" />
         <div class="flex gap-2">
           <Button @click="router.push({ name: 'purchase.edit', params: { id: purchase?.id } })">
             Szerkesztes
