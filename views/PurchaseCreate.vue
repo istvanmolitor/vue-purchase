@@ -14,7 +14,7 @@ import Icon from '@admin/components/ui/Icon.vue'
 import Input from '@admin/components/ui/Input.vue'
 import InputField from '@admin/components/ui/InputField.vue'
 import Label from '@admin/components/ui/Label.vue'
-import Select from '@admin/components/ui/Select.vue'
+import SelectField from '@admin/components/ui/SelectField.vue'
 import Textarea from '@admin/components/ui/Textarea.vue'
 import { toastService } from '@admin/lib/toastService'
 import PurchasePriceInput from '../components/PurchasePriceInput.vue'
@@ -164,30 +164,22 @@ onMounted(() => {
               <div class="space-y-2">
                 <Label for="customer_id">Partner *</Label>
                 <CustomerSelect id="customer_id" v-model="formData.customer_id" />
-                <FieldError v-if="errors.customer_id" :message="errors.customer_id" />
+                <FieldError :errors="errors.customer_id" />
               </div>
 
-              <div class="space-y-2">
-                <Label for="purchase_status_id">Statusz *</Label>
-                <Select id="purchase_status_id" v-model.number="formData.purchase_status_id" required>
-                  <option :value="0">Valassz statuszt</option>
-                  <option v-for="status in options.purchase_statuses" :key="status.id" :value="status.id">
-                    {{ status.name }}
-                  </option>
-                </Select>
-                <FieldError v-if="errors.purchase_status_id" :message="errors.purchase_status_id" />
-              </div>
+              <SelectField id="purchase_status_id" label="Statusz" v-model.number="formData.purchase_status_id" required :errors="errors.purchase_status_id">
+                <option :value="0">Valassz statuszt</option>
+                <option v-for="status in options.purchase_statuses" :key="status.id" :value="status.id">
+                  {{ status.name }}
+                </option>
+              </SelectField>
 
-              <div class="space-y-2">
-                <Label for="warehouse_id">Raktar *</Label>
-                <Select id="warehouse_id" v-model.number="formData.warehouse_id" required>
-                  <option :value="0">Valassz raktart</option>
-                  <option v-for="warehouse in options.warehouses" :key="warehouse.id" :value="warehouse.id">
-                    {{ warehouse.name }}
-                  </option>
-                </Select>
-                <FieldError v-if="errors.warehouse_id" :message="errors.warehouse_id" />
-              </div>
+              <SelectField id="warehouse_id" label="Raktar" v-model.number="formData.warehouse_id" required :errors="errors.warehouse_id">
+                <option :value="0">Valassz raktart</option>
+                <option v-for="warehouse in options.warehouses" :key="warehouse.id" :value="warehouse.id">
+                  {{ warehouse.name }}
+                </option>
+              </SelectField>
 
               <div class="space-y-2">
                 <Label for="currency_id">Penznem *</Label>
@@ -199,14 +191,14 @@ onMounted(() => {
                   placeholder="Valassz penznemet"
                   required
                 />
-                <FieldError v-if="errors.currency_id" :message="errors.currency_id" />
+                <FieldError :errors="errors.currency_id" />
               </div>
 
-              <InputField id="purchase_date" label="Beszerzes datuma" v-model="formData.purchase_date" type="date" />
+              <InputField id="purchase_date" label="Beszerzes datuma" v-model="formData.purchase_date" type="date" :errors="errors.purchase_date" />
 
-              <InputField id="expected_delivery_date" label="Varhato beerkezes" v-model="formData.expected_delivery_date" type="date" />
+              <InputField id="expected_delivery_date" label="Varhato beerkezes" v-model="formData.expected_delivery_date" type="date" :errors="errors.expected_delivery_date" />
 
-              <InputField id="delivery_date" label="Beerkezes datuma" v-model="formData.delivery_date" type="date" />
+              <InputField id="delivery_date" label="Beerkezes datuma" v-model="formData.delivery_date" type="date" :errors="errors.delivery_date" />
 
               <div class="space-y-2">
                 <Label for="total_price">Vegosszeg</Label>
@@ -216,6 +208,7 @@ onMounted(() => {
                   :currency-id="formData.currency_id"
                   :currencies="options.currencies"
                 />
+                <FieldError :errors="errors.total_price" />
               </div>
             </div>
 
@@ -224,6 +217,7 @@ onMounted(() => {
             <div class="space-y-2">
               <Label for="comment">Megjegyzes</Label>
               <Textarea id="comment" v-model="formData.comment" rows="3" />
+              <FieldError :errors="errors.comment" />
             </div>
 
             <div class="space-y-4">
@@ -234,6 +228,8 @@ onMounted(() => {
                   Tetel hozzaadasa
                 </Button>
               </div>
+
+              <FieldError :errors="errors.items" />
 
               <div
                 v-for="(item, index) in formData.purchase_items"
@@ -260,6 +256,7 @@ onMounted(() => {
                     placeholder="Valassz termeket"
                     required
                   />
+                  <FieldError :errors="errors[`purchase_items.${index}.product_id`]" />
                 </div>
 
                 <div class="space-y-2">
@@ -268,6 +265,7 @@ onMounted(() => {
                     <Input :id="`item_quantity_${index}`" v-model.number="item.quantity" type="number" min="0.0001" step="0.0001" required />
                     <span class="shrink-0 text-sm text-muted-foreground">{{ getProductUnitName(item.product_id) || '-' }}</span>
                   </div>
+                  <FieldError :errors="errors[`purchase_items.${index}.quantity`]" />
                 </div>
 
                 <div class="space-y-2">
@@ -278,10 +276,11 @@ onMounted(() => {
                     :currency-id="formData.currency_id"
                     :currencies="options.currencies"
                   />
+                  <FieldError :errors="errors[`purchase_items.${index}.price`]" />
                 </div>
 
                 <div class="md:col-span-3">
-                  <InputField :id="`item_comment_${index}`" label="Megjegyzes" v-model="item.comment" />
+                  <InputField :id="`item_comment_${index}`" label="Megjegyzes" v-model="item.comment" :errors="errors[`purchase_items.${index}.comment`]" />
                 </div>
               </div>
             </div>
@@ -306,14 +305,19 @@ onMounted(() => {
                   <Icon name="delete" :size="16" />
                 </Button>
 
-                <div class="space-y-2 md:col-span-2">
-                  <Label :for="`extra_item_type_${index}`">Tetel tipusa *</Label>
-                  <Select :id="`extra_item_type_${index}`" v-model.number="item.purchase_extra_item_type_id" required>
+                <div class="md:col-span-2">
+                  <SelectField
+                    :id="`extra_item_type_${index}`"
+                    label="Tetel tipusa"
+                    v-model.number="item.purchase_extra_item_type_id"
+                    required
+                    :errors="errors[`purchase_extra_items.${index}.purchase_extra_item_type_id`]"
+                  >
                     <option :value="0">Valassz extra tetelt</option>
                     <option v-for="type in options.purchase_extra_item_types" :key="type.id" :value="type.id">
                       {{ type.name }}
                     </option>
-                  </Select>
+                  </SelectField>
                 </div>
                 <div class="space-y-2">
                   <Label :for="`extra_item_price_${index}`">Ar</Label>
@@ -323,9 +327,10 @@ onMounted(() => {
                     :currency-id="formData.currency_id"
                     :currencies="options.currencies"
                   />
+                  <FieldError :errors="errors[`purchase_extra_items.${index}.price`]" />
                 </div>
                 <div class="md:col-span-3">
-                  <InputField :id="`extra_item_comment_${index}`" label="Megjegyzes" v-model="item.comment" />
+                  <InputField :id="`extra_item_comment_${index}`" label="Megjegyzes" v-model="item.comment" :errors="errors[`purchase_extra_items.${index}.comment`]" />
                 </div>
               </div>
             </div>
