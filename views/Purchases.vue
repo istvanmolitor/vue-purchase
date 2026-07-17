@@ -46,7 +46,6 @@ const daysUntilDelivery = (dateStr?: string | null): number | null => {
 
 const rows = computed(() => purchases.value.map((purchase) => ({
   ...purchase,
-  customer: purchase.customer?.name ?? '-',
   status: purchase.purchase_status?.name ?? '-',
   total_price: purchase.total_price != null
     ? `${purchase.total_price} ${purchase.currency?.code ?? ''}`.trim()
@@ -124,7 +123,7 @@ onMounted(() => {
             :loading="loading"
             :pagination="pagination"
             :searchable="true"
-            search-placeholder="Kereses URL vagy megjegyzes alapjan..."
+            search-placeholder="Kereses ugyfel neve, URL vagy megjegyzes alapjan..."
             default-sort="id"
             default-direction="desc"
             @fetch="fetchPurchases"
@@ -134,6 +133,16 @@ onMounted(() => {
                 <Plus class="h-4 w-4" />
                 Új beszerzes
               </Button>
+            </template>
+            <template #cell-customer="{ row }">
+              <RouterLink
+                v-if="(row as Purchase).customer"
+                :to="{ name: 'customer.customers.edit', params: { id: (row as Purchase).customer!.id } }"
+                class="text-sm font-medium text-primary hover:underline"
+              >
+                {{ (row as Purchase).customer!.name }}
+              </RouterLink>
+              <span v-else>-</span>
             </template>
             <template #cell-expected_delivery_date="{ row }">
               <span v-if="(row as Purchase & { delivery_days: number | null }).delivery_days === null">-</span>
