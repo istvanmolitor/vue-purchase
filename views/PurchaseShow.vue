@@ -32,6 +32,12 @@ const itemColumns = [
   { key: 'comment', label: 'Megjegyzes' },
 ]
 
+const extraItemColumns = [
+  { key: 'type', label: 'Tipus' },
+  { key: 'price', label: 'Ar' },
+  { key: 'comment', label: 'Megjegyzes' },
+]
+
 const fetchPurchase = async () => {
   loading.value = true
   try {
@@ -105,7 +111,7 @@ const pageTitle = computed(() => `Beszerzes #${purchase.value?.id ?? ''}`)
           <CardContent>
             <DataTable
               :columns="itemColumns"
-              :rows="(purchase.purchase_items || []).map((item) => ({
+              :data="(purchase.purchase_items || []).map((item) => ({
                 ...item,
                 product: item.product?.name || '-',
                 quantity: item.product?.product_unit?.name ? `${item.quantity} ${item.product.product_unit.name}` : item.quantity,
@@ -119,10 +125,28 @@ const pageTitle = computed(() => `Beszerzes #${purchase.value?.id ?? ''}`)
 
         <Card>
           <CardHeader>
+            <CardTitle>Extra tetelek</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <DataTable
+              :columns="extraItemColumns"
+              :data="(purchase.purchase_extra_items || []).map((item) => ({
+                ...item,
+                type: item.purchase_extra_item_type?.name || '-',
+                price: item.price ?? '-',
+                comment: item.comment || '-',
+              }))"
+              :loading="false"
+            />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
             <CardTitle>Statusz elozmenyek</CardTitle>
           </CardHeader>
           <CardContent>
-            <DataTable :columns="logColumns" :rows="logs" :loading="false" />
+            <DataTable :columns="logColumns" :data="logs" :loading="false" />
           </CardContent>
         </Card>
       </template>
